@@ -1,0 +1,58 @@
+#!/bin/bash
+
+SAVEPATH=${XDG_CACHE_HOME:-$HOME/.cache}
+GTKRC_FILE="$SAVEPATH/litebox.gtkrc"
+export GTKRC_FILE
+
+if [ ! -f $GTKRC_FILE ] ; then
+	cat > $GTKRC_FILE <<EOF
+style "defaultstyle" {
+  bg[NORMAL] = "#FFFFFF"
+	xthickness = 0
+	ythickness = 0
+}
+
+class "GtkWidget" style "defaultstyle"
+class "GtkFrame" style "defaultstyle"
+class "GtkTextView" style "defaultstyle"
+
+EOF
+fi
+
+function show_about()
+{
+	VERSION=1.0
+	APPNAME="Testing"
+	COPYRIGHT="Copyright @ w00fpack"
+	AUTHORS="w00fpack"
+	WEBSITE="https://github.com/w00fpack/LiteBox"
+	WEBSITE_LABEL="Lite Box"
+	LICENSE="CC0"
+	HELP_COMMENTS="LiteBox is a tiny application to turn your display into a lightbox.  With a lightbox, you can do things such as:
+	View negatives and film
+	Trace images that are on your display"
+
+	 yad --center \
+	--name="snapback_about"\
+	--title=$"About $APPNAME" \
+	--gtkrc="$GTKRC_FILE" \
+	--window-icon="/usr/share/pixmaps/litebox.svg" \
+	--image="/usr/share/pixmaps/litebox.svg" \
+	--fontname="Comic Neue regular normal 30" \
+	--about \
+	--pname="$APPNAME" \
+	--pversion="$VERSION" \
+	--copyright="$COPYRIGHT" \
+	--comments="$HELP_COMMENTS" \
+	--license="$LICENSE" \
+	--authors="$AUTHORS" \
+	--website="$WEBSITE" \
+	--website-label="$WEBSITE_LABEL" &
+}
+export -f show_about
+
+yad \
+	--gtkrc=$GTKRC_FILE \
+	--fullscreen \
+	--button="Quit!gtk-quit":"1" \
+	--button="Show help!gtk-help":"bash -c show_about" \

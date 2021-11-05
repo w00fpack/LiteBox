@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=LiteBox
+Icon=/usr/share/pixmaps/litebox.svg
+Comment=trace and view phsical things
+Exec=litebox
+Terminal=false
+Type=Application
+Categories=X-GraphicUtility
